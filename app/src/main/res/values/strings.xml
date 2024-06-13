@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SkinSavvy</string>
+    <string name="gallery">Galery</string>
+    <string name="analyze">Analyze</string>
+    <string name="image">Image</string>
+    <string name="result_text">Prediction:%1$s \nConfidence  %2$.2f%% </string>
+    <string name="text_main">Check Your Skin</string>
+    <string name="text_main2">Results of Your Skin Analysis</string>
+    <string name="simpan">Save Data</string>
+    <string name="icon">Icon</string>
+    <string name="selectimage">Select an image first.</string>
+    <string name="failedimage">Failed to classify the image.</string>
+    <string name="permissonacces">Permission Acces</string>
+    <string name="permissondenied">Permission Denied! You cannot access gallery.</string>
+    <string name="failedtofetch">Failed to fetch articles</string>
+    <string name="text">News About Cancer</string>
+</resources>
