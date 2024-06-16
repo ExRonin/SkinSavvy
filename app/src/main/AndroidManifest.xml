@@ -20,15 +20,18 @@
             android:name=".view.user.ResultActivity"
             android:exported="false"
             android:parentActivityName=".view.main.MainActivity"/>
-        <activity
-            android:theme="@style/Theme.AppCompat.DayNight"
-            android:name=".view.main.MainActivity"
-            android:exported="true" >
+        <activity android:name="com.dicoding.asclepius.view.splash.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/Theme.AppCompat.DayNight"
+            android:name=".view.main.MainActivity"
+            android:exported="true" >
         </activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
