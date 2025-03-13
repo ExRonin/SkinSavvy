@@ -53,16 +53,28 @@
                 app:layout_constraintStart_toStartOf="@id/result_image"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
+            <Button
+                android:id="@+id/btnConsultation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="280dp"
+                android:text="Konsultasi"
+                android:backgroundTint="@color/greenss"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/result_image" />
+
             <Button
                 android:id="@+id/SaveData"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="268dp"
+                android:layout_marginStart="160dp"
+                android:backgroundTint="@color/greenss"
                 android:text="@string/simpan"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/result_image"
-                android:backgroundTint="@color/greenss"/>
+                app:layout_constraintStart_toStartOf="@id/result_image" />
 
             <TextView
                 android:id="@+id/result_text"
@@ -75,6 +87,8 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@id/result_image"
                 app:layout_constraintTop_toTopOf="@id/SaveData" />
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

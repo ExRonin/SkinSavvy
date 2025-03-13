@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.skinSavvy.R
@@ -31,6 +32,24 @@ class ResultActivity : AppCompatActivity() {
         binding.resultImage.setImageURI(imageUri)
         val confidencePercentage = confidence * 100
         binding.resultText.text = getString(R.string.result_text, label, confidencePercentage)
+
+
+        if (label == "Cancer") {
+            binding.btnConsultation.visibility = View.VISIBLE
+        } else {
+            binding.btnConsultation.visibility = View.GONE
+        }
+
+        binding.btnConsultation.setOnClickListener {
+//            if (FirebaseAuth.getInstance().currentUser != null) {
+//                val intent = Intent(this, ConsultationActivity::class.java)
+//                startActivity(intent)
+//            } else {
+//                Toast.makeText(this, "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
+//                startActivity(Intent(this, LoginActivity::class.java))
+//            }
+        }
+
         binding.SaveData.setOnClickListener {
             savePrediction(label, confidence)
         }
