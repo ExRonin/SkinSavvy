@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.dicoding.skinSavvy.R
 import com.dicoding.skinSavvy.databinding.ActivityResultBinding
 import com.dicoding.skinSavvy.local.database.PredictionHistoryDatabase
@@ -28,7 +31,11 @@ class ResultActivity : AppCompatActivity() {
         val confidence = intent.getFloatExtra("CONFIDENCE", 0f)
         @Suppress("DEPRECATION")
         imageUri = intent.getParcelableExtra("IMAGE_URI") ?: return
-
+        val resultText: TextView = findViewById(R.id.result_text)
+        val resultCardView: CardView = findViewById(R.id.resultCardView)
+        val positiveResultLayout: View = findViewById(R.id.positiveResultLayout)
+        val negativeResultLayout: View = findViewById(R.id.negativeResultLayout)
+        val resultIcon: ImageView = findViewById(R.id.resultIcon)
         binding.resultImage.setImageURI(imageUri)
         val confidencePercentage = confidence * 100
         binding.resultText.text = getString(R.string.result_text, label, confidencePercentage)
@@ -36,8 +43,18 @@ class ResultActivity : AppCompatActivity() {
 
         if (label == "Cancer") {
             binding.btnConsultation.visibility = View.VISIBLE
+            resultText.setTextColor(resources.getColor(R.color.red, null))
+            resultCardView.setCardBackgroundColor(resources.getColor(R.color.soft_red, null))
+            resultIcon.setImageResource(R.drawable.baseline_warning_24);
+            positiveResultLayout.visibility = View.VISIBLE
+            negativeResultLayout.visibility = View.GONE
         } else {
             binding.btnConsultation.visibility = View.GONE
+            resultText.setTextColor(resources.getColor(R.color.green, null))
+            resultCardView.setCardBackgroundColor(resources.getColor(R.color.soft_green, null))
+            resultIcon.setImageResource(R.drawable.baseline_check_circle_24);
+            positiveResultLayout.visibility = View.GONE
+            negativeResultLayout.visibility = View.VISIBLE
         }
 
         binding.btnConsultation.setOnClickListener {
@@ -53,6 +70,9 @@ class ResultActivity : AppCompatActivity() {
         binding.SaveData.setOnClickListener {
             savePrediction(label, confidence)
         }
+
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -102,4 +122,6 @@ class ResultActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+
 }

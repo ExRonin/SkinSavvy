@@ -36,4 +36,7 @@
     <color name="soft_orange">#FFF8E2</color>
     <color name="warning">#FDB022</color>
     <color name="blue">#2196F3</color>
+    <color name="red">#E53935</color>
+    <color name="soft_red">#FFEBEE</color>
+
 </resources>

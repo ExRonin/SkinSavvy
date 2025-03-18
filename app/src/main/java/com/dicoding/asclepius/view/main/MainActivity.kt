@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             setCompressionQuality(70)
             setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
             setStatusBarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimaryDark))
-            setToolbarWidgetColor(ContextCompat.getColor(this@MainActivity, R.color.colorAccent))
+            setToolbarWidgetColor(ContextCompat.getColor(this@MainActivity, R.color.white))
             setHideBottomControls(false)
         }
 

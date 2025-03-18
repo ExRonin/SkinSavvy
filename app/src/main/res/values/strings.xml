@@ -6,7 +6,7 @@
     <string name="result_text">Prediction:%1$s \nConfidence  %2$.2f%% </string>
     <string name="text_main">Check Your Skin</string>
     <string name="text_main2">Results of Your Skin Analysis</string>
-    <string name="simpan">Save Data</string>
+    <string name="simpan">Save</string>
     <string name="icon">Icon</string>
     <string name="selectimage">Select an image first.</string>
     <string name="failedimage">Failed to classify the image.</string>
