@@ -138,6 +138,19 @@
                         app:layout_constraintTop_toBottomOf="@+id/imageCardView">
 
                         <Button
+                            android:id="@+id/cameraButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/blue"
+                            android:elevation="2dp"
+                            android:paddingVertical="12dp"
+                            android:text="@string/camera"
+                            android:textAllCaps="false"
+                            android:textColor="@color/md_white_1000" />
+
+                        <Button
                             android:id="@+id/galleryButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"

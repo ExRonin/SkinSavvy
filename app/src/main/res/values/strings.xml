@@ -14,6 +14,6 @@
     <string name="permissondenied">Permission Denied! You cannot access gallery.</string>
     <string name="failedtofetch">Failed to fetch articles</string>
     <string name="text">News About Cancer</string>
-
+    <string name="camera">Camera</string>
 
 </resources>

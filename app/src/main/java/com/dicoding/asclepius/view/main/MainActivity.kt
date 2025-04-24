@@ -1,9 +1,11 @@
 package com.dicoding.skinSavvy.view.main
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
@@ -35,26 +37,43 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageClassifierHelper: ImageClassifierHelper
     private var currentImageUri: Uri? = null
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NewsAdapter
     private var articles: MutableList<Article> = mutableListOf()
+
+    // Permission request constants
+    companion object {
+        private const val REQUEST_STORAGE_PERMISSION = 101
+        private const val REQUEST_CAMERA_PERMISSION = 102
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         imageClassifierHelper = ImageClassifierHelper(this)
+
+        // Set up gallery button
         binding.galleryButton.setOnClickListener {
             startGallery()
         }
+
+        // Set up camera button
+        binding.cameraButton.setOnClickListener {
+            startCamera()
+        }
+
+        // Set up analyze button
         binding.analyzeButton.setOnClickListener {
             val select = getString(R.string.selectimage)
             currentImageUri?.let {
                 analyzeImage()
                 clearImage()
-
             } ?: showToast(select)
         }
+
+        // Set up image picker launcher
         imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val data: Intent? = result.data
@@ -64,14 +83,23 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // Set up camera launcher
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                currentImageUri?.let { uri ->
+                    startUCrop(uri)
+                }
+            }
+        }
+
         recyclerView = findViewById(R.id.recyclerViewContent)
         adapter = NewsAdapter(articles)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
         fetchDataFromApi()
-        requestStoragePermission()
-
+        requestPermissions()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -79,10 +107,55 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun requestPermissions() {
+        // Request storage permissions
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_STORAGE_PERMISSION)
+        }
+
+        // Request camera permissions
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSION)
+        }
+    }
 
     private fun startGallery() {
         val pickImage = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         imagePickerLauncher.launch(pickImage)
+    }
+
+    private fun startCamera() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            val uri = createImageUri()
+            currentImageUri = uri
+            cameraLauncher.launch(uri)
+        } else {
+            requestCameraPermission()
+        }
+    }
+
+    private fun createImageUri(): Uri {
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "img_${System.currentTimeMillis()}.jpg")
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+        }
+
+        return contentResolver.insert(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+            } else {
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            },
+            contentValues
+        ) ?: throw IllegalStateException("Could not create image URI")
+    }
+
+    private fun requestCameraPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.CAMERA),
+            REQUEST_CAMERA_PERMISSION
+        )
     }
 
     private fun startUCrop(sourceUri: Uri) {
@@ -150,25 +223,36 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_STORAGE_PERMISSION)
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         val permission = getString(R.string.permissonacces)
         val denied = getString(R.string.permissondenied)
-        if (requestCode == REQUEST_STORAGE_PERMISSION) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showToast(permission)
-            } else {
-                showToast(denied)
+
+        when (requestCode) {
+            REQUEST_STORAGE_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showToast(permission)
+                } else {
+                    showToast(denied)
+                }
+            }
+            REQUEST_CAMERA_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showToast(permission)
+                    // We can start camera now
+                    binding.cameraButton.isEnabled = true
+                } else {
+                    showToast(denied)
+                    binding.cameraButton.isEnabled = false
+                }
             }
         }
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -179,6 +263,7 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     private fun fetchDataFromApi() {
         val apiKey = com.dicoding.skinSavvy.BuildConfig.KEY
         val service = ApiClient.create()
@@ -199,14 +284,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun clearImage() {
         super.onResume()
         binding.previewImageView.setImageDrawable(null)
-    }
-
-
-
-    companion object {
-        private const val REQUEST_STORAGE_PERMISSION = 101
     }
 }
