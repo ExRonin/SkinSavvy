@@ -4,10 +4,5 @@
         android:id="@+id/page_1"
         android:enabled="true"
         android:icon="@drawable/baseline_attribution_24"
-        android:title="Profile"/>
-    <item
-        android:id="@+id/page_2"
-        android:enabled="true"
-        android:icon="@drawable/baseline_login_24"
-        android:title="Login"/>
+        android:title="About Us"/>
 </menu>

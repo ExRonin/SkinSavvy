@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.asclepius.view.user.BottomNav
 import com.dicoding.skinSavvy.R
 import com.dicoding.skinSavvy.databinding.ActivityMainBinding
 import com.dicoding.skinSavvy.helper.ImageClassifierHelper
@@ -100,6 +101,13 @@ class MainActivity : AppCompatActivity() {
 
         fetchDataFromApi()
         requestPermissions()
+
+
+        val bottomNav = BottomNav(this, findViewById(R.id.bottomNavigation))
+        bottomNav.setupNavigation()
+
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

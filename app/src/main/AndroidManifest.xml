@@ -47,6 +47,9 @@
         <activity android:name=".view.user.PredictionHistoryActivity"
             android:theme="@style/Theme.AppCompat.DayNight"
             android:parentActivityName=".view.main.MainActivity"/>
+        <activity android:name="com.dicoding.asclepius.view.user.AboutUs"
+            android:theme="@style/Theme.AppCompat.DayNight"
+            android:parentActivityName=".view.main.MainActivity"/>
 
     </application>
 

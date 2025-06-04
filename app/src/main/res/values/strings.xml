@@ -15,5 +15,11 @@
     <string name="failedtofetch">Failed to fetch articles</string>
     <string name="text">News About Cancer</string>
     <string name="camera">Camera</string>
+    <string name="aboutus">SkinSavvy adalah aplikasi gratis yang dirancang untuk membantu deteksi dini kanker kulit.
+        aplikasi ini menyediakan alat untuk mengenali perubahan kulit yang berpotensi menjadi tanda awal kanker kulit.
+        SkinSavvy meningkatkan kesadaran akan pentingnya pemeriksaan kulit mandiri dan mendorong konsultasi dengan profesional medis.
+        Deteksi dini kanker kulit sangat penting, karena jika terdeteksi pada tahap awal, tingkat kesembuhannya sangat tinggi.
+        SkinSavvy membantu pengguna mengidentifikasi tanda-tanda mencurigakan lebih awal, sehingga mereka dapat segera mencari saran medis.
+        Meskipun aplikasi ini merupakan alat bantu yang berguna, diagnosis tetap harus dilakukan oleh tenaga kesehatan profesional.</string>
 
 </resources>
